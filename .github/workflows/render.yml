@@ -1,0 +1,40 @@
+name: render-episode
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: Episode JSON path
+        default: episodes/plague-doctor-ru.json
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: System deps
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - name: Python deps
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-sd-turbo-v1
+      - name: Render
+        env:
+          EPISODE: ${{ inputs.episode }}
+        run: python src/make_video.py "$EPISODE"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: episode-${{ github.run_number }}
+          path: output/
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "ep-${{ github.run_number }}" output/video.mp4 output/preview.png --title "Episode render ${{ github.run_number }}" --notes "Rendered by GitHub Actions"

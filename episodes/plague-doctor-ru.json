@@ -1,0 +1,34 @@
+{
+  "title": "Каково это — быть чумным доктором?",
+  "voice": "ru-RU-DmitryNeural",
+  "style": "flat 2D cartoon illustration, painted storybook background, muted warm colors, soft light, no text, no people",
+  "character": {
+    "head_prompt": "cartoon head portrait of a medieval plague doctor with a long bird beak mask and a black wide brim hat, flat colors, thick black outline, front view, plain white background"
+  },
+  "scenes": [
+    {
+      "text": "Тебя назначили городским врачом во время чумы. Поздравляем! Зарплата отличная. Есть один минус: вылечить ты никого не сможешь.",
+      "bg_prompt": "empty medieval european town street at dusk with fog and wooden houses"
+    },
+    {
+      "text": "Твоя форма: тяжёлый плащ из вощёной ткани, кожаные перчатки и маска с клювом. Внутри клюва лежат сушёные травы. Тогда считали, что болезнь переносит дурной воздух.",
+      "bg_prompt": "dim medieval doctor study with dried herbs hanging, glass bottles and a candle"
+    },
+    {
+      "text": "Чтобы никого не касаться, ты показываешь на больное место длинной палкой. Это, честно говоря, лучшая часть работы.",
+      "bg_prompt": "narrow medieval alley with a wooden cart and a closed door, muted colors"
+    },
+    {
+      "text": "А лечение? Кровопускание, пиявки и ароматные пилюли. Звучит ужасно, и работало примерно так же.",
+      "bg_prompt": "medieval sickroom interior with a straw bed, a candle and an open window"
+    },
+    {
+      "text": "Зато у тебя всегда есть дело: ты записываешь, кто заболел, и помогаешь людям составлять завещания.",
+      "bg_prompt": "medieval clerk desk with parchment, quill and ink in warm candlelight"
+    },
+    {
+      "text": "А самое смешное вот что. Знаменитый костюм с клювом придумали только в семнадцатом веке. Во времена Чёрной смерти врачи ходили без него.",
+      "bg_prompt": "old european city skyline at sunset, painted in warm orange tones"
+    }
+  ]
+}

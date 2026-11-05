@@ -1,0 +1,7 @@
+edge-tts
+diffusers
+transformers
+accelerate
+safetensors
+pillow
+numpy
