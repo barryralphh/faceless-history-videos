@@ -5,3 +5,4 @@ accelerate
 safetensors
 pillow
 numpy
+piper-tts
