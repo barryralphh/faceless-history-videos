@@ -101,6 +101,29 @@ async def synth(text, voice, path):
     await edge_tts.Communicate(text, voice).save(str(path))
 
 
+PIPER_REPO = 'rhasspy/piper-voices'
+PIPER_FILE = 'ru/ru_RU/dmitri/medium/ru_RU-dmitri-medium.onnx'
+
+
+def tts(text, voice, i):
+    out = WORK / f's{i}.mp3'
+    for attempt in range(2):
+        try:
+            asyncio.run(synth(text, voice, out))
+            return out
+        except Exception as e:
+            print('!! edge-tts failed:', repr(e)[:200], flush=True)
+    from huggingface_hub import hf_hub_download
+    model = hf_hub_download(PIPER_REPO, PIPER_FILE)
+    hf_hub_download(PIPER_REPO, PIPER_FILE + '.json')
+    wav = WORK / f'p{i}.wav'
+    r = subprocess.run([sys.executable, '-m', 'piper', '--model', model, '--output_file', str(wav)], input=text, capture_output=True, text=True)
+    if r.returncode:
+        print(r.stderr[-1500:])
+        raise SystemExit('piper failed')
+    return wav
+
+
 def sentences(text):
     return [s for s in re.split(r'(?<=[.!?]) +', text.strip()) if s]
 
@@ -212,7 +235,7 @@ def main(ep_path):
         print(f'scene {i + 1}/{len(ep["scenes"])}', flush=True)
         mp3 = WORK / f's{i}.mp3'
         wav = WORK / f's{i}.wav'
-        asyncio.run(synth(sc['text'], ep['voice'], mp3))
+        mp3 = tts(sc['text'], ep['voice'], i)
         sh(['ffmpeg', '-y', '-i', mp3, '-af', 'apad=pad_dur=0.6', '-ar', '44100', '-ac', '1', wav])
         bg = make_bg(pipe, ep.get('style', '') + ', ' + sc['bg_prompt'], 100 + i)
         bg.save(WORK / f'bg{i}.png')
